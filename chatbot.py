@@ -7,15 +7,22 @@ def chatbot():
     st.title("🤖 AI Assistant")
     st.caption("Ask me anything...")
 
-    # Chat History
+    # Session State
     if "messages" not in st.session_state:
-        st.session_state.messages = []
+        st.session_state.messages = [
+            {
+                "role": "system",
+                "content": "You are a helpful AI Assistant."
+            }
+        ]
 
-    # Show old messages
+    # Show Previous Messages
     for message in st.session_state.messages:
 
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
+        if message["role"] != "system":
+
+            with st.chat_message(message["role"]):
+                st.markdown(message["content"])
 
     # Chat Input
     prompt = st.chat_input("Type your message...")
@@ -33,12 +40,12 @@ def chatbot():
         with st.chat_message("user"):
             st.markdown(prompt)
 
-        # AI Thinking
+        # AI Response
         with st.spinner("🤖 AI is thinking..."):
 
-            response = get_ai_response(prompt)
+            response = get_ai_response(st.session_state.messages)
 
-        # Save AI Message
+        # Save AI Response
         st.session_state.messages.append(
             {
                 "role": "assistant",
@@ -46,6 +53,6 @@ def chatbot():
             }
         )
 
-        # Show AI Message
+        # Show AI Response
         with st.chat_message("assistant"):
             st.markdown(response)
