@@ -8,6 +8,7 @@ def dashboard():
     if "page" not in st.session_state:
         st.session_state.page = "dashboard"
 
+
     # =========================
     # Sidebar
     # =========================
@@ -21,32 +22,58 @@ def dashboard():
 
         st.write("---")
 
+
         if st.button("🏠 Dashboard", use_container_width=True):
             st.session_state.page = "dashboard"
+
 
         if st.button("💬 Start Chat", use_container_width=True):
             st.session_state.page = "chat"
 
+
+        # Clear Chat Feature
+        if st.button("🧹 Clear Chat", use_container_width=True):
+
+            st.session_state.messages = [
+                {
+                    "role": "system",
+                    "content": "You are a helpful AI Assistant."
+                }
+            ]
+
+            st.success("Chat cleared successfully!")
+            st.rerun()
+
+
         if st.button("📜 Chat History", use_container_width=True):
             st.session_state.page = "history"
+
 
         if st.button("👤 Profile", use_container_width=True):
             st.session_state.page = "profile"
 
+
         st.write("---")
 
+
         if st.button("🚪 Logout", use_container_width=True):
+
             st.session_state.logged_in = False
             st.session_state.username = ""
             st.session_state.page = "login"
+
             st.rerun()
+
+
 
     # =========================
     # Dashboard
     # =========================
+
     if st.session_state.page == "dashboard":
 
         st.title("🤖 AI Assistant")
+
 
         st.markdown(
             f"""
@@ -56,11 +83,15 @@ def dashboard():
 """
         )
 
+
         st.write("")
+
 
         col1, col2 = st.columns(2)
 
+
         with col1:
+
             st.success("""
 ### 💬 Start Chat
 
@@ -73,11 +104,16 @@ Solve Problems
 Learn Anything
 """)
 
+
             if st.button("Open Chat", use_container_width=True):
+
                 st.session_state.page = "chat"
                 st.rerun()
 
+
+
         with col2:
+
             st.info("""
 ### 📜 Chat History
 
@@ -86,11 +122,15 @@ View previous chats.
 Coming Soon...
 """)
 
+
         st.write("")
+
 
         col3, col4 = st.columns(2)
 
+
         with col3:
+
             st.warning("""
 ### 👤 Profile
 
@@ -99,7 +139,9 @@ Manage your account.
 Coming Soon...
 """)
 
+
         with col4:
+
             st.error("""
 ### ⚙️ Settings
 
@@ -110,25 +152,34 @@ Export Chat
 Coming Soon...
 """)
 
+
+
     # =========================
     # Chat Page
     # =========================
+
     elif st.session_state.page == "chat":
 
         chatbot()
 
+
+
     # =========================
     # History
     # =========================
+
     elif st.session_state.page == "history":
 
         st.title("📜 Chat History")
 
         st.info("History feature will be added soon.")
 
+
+
     # =========================
     # Profile
     # =========================
+
     elif st.session_state.page == "profile":
 
         st.title("👤 Profile")
