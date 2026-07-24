@@ -1,13 +1,15 @@
 import streamlit as st
 from chatbot import chatbot
+from database import get_chat_history
 
 
 def dashboard():
 
+    # =========================
     # Session State
+    # =========================
     if "page" not in st.session_state:
         st.session_state.page = "dashboard"
-
 
     # =========================
     # Sidebar
@@ -22,16 +24,17 @@ def dashboard():
 
         st.write("---")
 
-
+        # Dashboard
         if st.button("🏠 Dashboard", use_container_width=True):
             st.session_state.page = "dashboard"
+            st.rerun()
 
-
+        # Chat
         if st.button("💬 Start Chat", use_container_width=True):
             st.session_state.page = "chat"
+            st.rerun()
 
-
-        # Clear Chat Feature
+        # Clear Chat
         if st.button("🧹 Clear Chat", use_container_width=True):
 
             st.session_state.messages = [
@@ -42,38 +45,34 @@ def dashboard():
             ]
 
             st.success("Chat cleared successfully!")
+            st.session_state.page = "chat"
             st.rerun()
 
-
+        # History
         if st.button("📜 Chat History", use_container_width=True):
             st.session_state.page = "history"
+            st.rerun()
 
-
+        # Profile
         if st.button("👤 Profile", use_container_width=True):
             st.session_state.page = "profile"
-
+            st.rerun()
 
         st.write("---")
 
-
+        # Logout
         if st.button("🚪 Logout", use_container_width=True):
-
             st.session_state.logged_in = False
             st.session_state.username = ""
             st.session_state.page = "login"
-
             st.rerun()
 
-
-
     # =========================
-    # Dashboard
+    # Dashboard Page
     # =========================
-
     if st.session_state.page == "dashboard":
 
         st.title("🤖 AI Assistant")
-
 
         st.markdown(
             f"""
@@ -83,51 +82,39 @@ def dashboard():
 """
         )
 
-
         st.write("")
 
-
         col1, col2 = st.columns(2)
-
 
         with col1:
 
             st.success("""
 ### 💬 Start Chat
 
-Ask Questions
+• Ask Questions
 
-Generate Code
+• Generate Code
 
-Solve Problems
+• Solve Problems
 
-Learn Anything
+• Learn Anything
 """)
 
-
             if st.button("Open Chat", use_container_width=True):
-
                 st.session_state.page = "chat"
                 st.rerun()
-
-
 
         with col2:
 
             st.info("""
 ### 📜 Chat History
 
-View previous chats.
-
-Coming Soon...
+View all your previous conversations.
 """)
-
 
         st.write("")
 
-
         col3, col4 = st.columns(2)
-
 
         with col3:
 
@@ -138,7 +125,6 @@ Manage your account.
 
 Coming Soon...
 """)
-
 
         with col4:
 
@@ -152,34 +138,38 @@ Export Chat
 Coming Soon...
 """)
 
-
-
     # =========================
     # Chat Page
     # =========================
-
     elif st.session_state.page == "chat":
 
         chatbot()
 
-
-
     # =========================
-    # History
+    # History Page
     # =========================
-
     elif st.session_state.page == "history":
 
         st.title("📜 Chat History")
 
-        st.info("History feature will be added soon.")
+        history = get_chat_history(st.session_state.username)
 
+        if len(history) == 0:
 
+            st.info("No chat history found.")
+
+        else:
+
+            for role, message, created_at in history:
+
+                with st.chat_message(role):
+                    st.markdown(message)
+
+                st.caption(f"🕒 {created_at}")
 
     # =========================
-    # Profile
+    # Profile Page
     # =========================
-
     elif st.session_state.page == "profile":
 
         st.title("👤 Profile")
@@ -188,4 +178,4 @@ Coming Soon...
 
         st.code(st.session_state.username)
 
-        st.info("Profile features coming soon.")
+        st.info("More profile features coming soon.")

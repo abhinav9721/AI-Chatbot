@@ -1,7 +1,7 @@
 import streamlit as st
 from utils import get_ai_response
 
-
+from database import save_message
 def chatbot():
 
     st.title("🤖 AI Assistant")
@@ -36,7 +36,7 @@ def chatbot():
                 "content": prompt
             }
         )
-
+        save_message(st.session_state.username, "user", prompt)
         with st.chat_message("user"):
             st.markdown(prompt)
 
@@ -52,7 +52,7 @@ def chatbot():
                 "content": response
             }
         )
-
+        save_message(st.session_state.username, "assistant", response)
         # Show AI Response
         with st.chat_message("assistant"):
             st.markdown(response)
