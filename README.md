@@ -1,3 +1,6 @@
+## 🚀 Live Demo
+https://ai-chatbot-yc9ceslvywschhqx29tlgu.streamlit.app/
+
 # 🤖 AI Assistant Chatbot
 
 An AI-powered chatbot built using **Streamlit** and **Groq AI API**.
