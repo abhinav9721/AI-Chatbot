@@ -13,3 +13,4 @@ __pycache__/
 
 # Database (agar users.db local hi rakhna hai)
 users.db
+chatbot.db
