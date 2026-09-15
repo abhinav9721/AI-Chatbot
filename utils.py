@@ -23,7 +23,7 @@ def get_ai_response(messages):
 
         completion = client.chat.completions.create(
 
-            model="llama-3.3-70b-versatile",
+            model="model="openai/gpt-oss-120b"",
 
             messages=messages,
 
